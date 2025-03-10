@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/user')]
 final class UserController extends AbstractController
 {
     private $em;
@@ -22,8 +23,8 @@ final class UserController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/register', name: 'app_user')]
-    public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response {
+    #[Route('/register', name: 'user_register')]
+    public function userRegister(Request $request, UserPasswordHasherInterface $passwordHasher): Response {
         $user = new User();
         $registerForm = $this->createForm(RegisterType::class, $user);
         $registerForm->handleRequest($request);
@@ -38,5 +39,10 @@ final class UserController extends AbstractController
         return $this->render('user/register.html.twig', [
             'register_form' => $registerForm->createView()
         ]);
+    }
+
+    #[Route('/profile', name: 'user_profile')]
+    public function userProfile () {
+        return $this->render('user/profile.html.twig');
     }
 }
