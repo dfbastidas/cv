@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db_app:
+    container_name: db_app
+    image: mariadb:10.5
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: cv
+    volumes:
+      - cv:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - cv-network
+  web:
+    depends_on:
+      - db_app
+    container_name: cv
+    build: .
+    volumes:
+      - .:/var/www/html/cv
+    ports:
+      - "80:80"
+    networks:
+      - cv-network
+volumes:
+  cv:
+
+networks:
+  cv-network:
+    driver: bridge
