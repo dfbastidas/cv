@@ -24,8 +24,6 @@ services:
       - "80:80"
     networks:
       - cv-network
-volumes:
-  cv:
 
 networks:
   cv-network:
