@@ -68,9 +68,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CurriculumVitae::class, mappedBy: 'owner', orphanRemoval: true)]
     private Collection $curriculumVitaes;
 
+    /**
+     * @var Collection<int, Experience>
+     */
+    #[ORM\OneToMany(targetEntity: Experience::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $experience;
+
+    /**
+     * @var Collection<int, Education>
+     */
+    #[ORM\OneToMany(targetEntity: Education::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $education;
+
     public function __construct()
     {
         $this->curriculumVitaes = new ArrayCollection();
+        $this->experience = new ArrayCollection();
+        $this->education = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -280,6 +294,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($curriculumVitae->getOwner() === $this) {
                 $curriculumVitae->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Experience>
+     */
+    public function getExperience(): Collection
+    {
+        return $this->experience;
+    }
+
+    public function addExperience(Experience $experience): static
+    {
+        if (!$this->experience->contains($experience)) {
+            $this->experience->add($experience);
+            $experience->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExperience(Experience $experience): static
+    {
+        if ($this->experience->removeElement($experience)) {
+            // set the owning side to null (unless already changed)
+            if ($experience->getUser() === $this) {
+                $experience->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Education>
+     */
+    public function getEducation(): Collection
+    {
+        return $this->education;
+    }
+
+    public function addEducation(Education $education): static
+    {
+        if (!$this->education->contains($education)) {
+            $this->education->add($education);
+            $education->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEducation(Education $education): static
+    {
+        if ($this->education->removeElement($education)) {
+            // set the owning side to null (unless already changed)
+            if ($education->getUser() === $this) {
+                $education->setUser(null);
             }
         }
 

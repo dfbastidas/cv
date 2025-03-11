@@ -26,12 +26,12 @@ class Experience
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'experiences')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?CurriculumVitae $cv = null;
-
     #[ORM\Column]
     private ?int $user_id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'experience')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -86,18 +86,6 @@ class Experience
         return $this;
     }
 
-    public function getCv(): ?CurriculumVitae
-    {
-        return $this->cv;
-    }
-
-    public function setCv(?CurriculumVitae $cv): static
-    {
-        $this->cv = $cv;
-
-        return $this;
-    }
-
     public function getUserId(): ?int
     {
         return $this->user_id;
@@ -106,6 +94,18 @@ class Experience
     public function setUserId(int $user_id): static
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
