@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterType;
+use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,9 @@ final class UserController extends AbstractController
     }
 
     #[Route('/profile', name: 'user_profile')]
-    public function userProfile () {
-        return $this->render('user/profile.html.twig');
+    public function userProfile (Request $request) {
+        $user = $this->getUser();
+        $userForm = $this->createForm(UserType::class, $user);
+        return $this->render('user/profile.html.twig', ['user_form' => $userForm->createView()]);
     }
 }

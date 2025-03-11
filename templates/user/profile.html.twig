@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}¡Register!{% endblock %}
-
+{% block title %}¡My CV!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
-
+    <div class="container">
+        {{ form(user_form) }}
+    </div>
 {% endblock %}

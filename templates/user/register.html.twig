@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}¡Register!{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
     {{ form(register_form) }}
 {% endblock %}
