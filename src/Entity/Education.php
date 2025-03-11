@@ -26,12 +26,24 @@ class Education
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $alma_mater = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
-
     #[ORM\ManyToOne(inversedBy: 'education')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    /**
+     * @param string|null $degree
+     * @param \DateTimeInterface|null $start_date
+     * @param \DateTimeInterface|null $end_date
+     * @param string|null $alma_mater
+     */
+    public function __construct(?string $degree, ?\DateTimeInterface $start_date, ?\DateTimeInterface $end_date, ?string $alma_mater)
+    {
+        $this->degree = $degree;
+        $this->start_date = $start_date;
+        $this->end_date = $end_date;
+        $this->alma_mater = $alma_mater;
+    }
+
 
     public function getId(): ?int
     {
@@ -82,18 +94,6 @@ class Education
     public function setAlmaMater(?string $alma_mater): static
     {
         $this->alma_mater = $alma_mater;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
 
         return $this;
     }

@@ -6,17 +6,34 @@
 {% endblock %}
 {% block body %}
     <div class="container py-4">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion accordion-flush" id="personalInfo">
             <div class="accordion-item border">
                 <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsePersonal" aria-expanded="false" aria-controls="flush-collapsePersonal">
                         Informacion del usuario
                     </button>
                 </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse p-3" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div id="flush-collapsePersonal" class="accordion-collapse collapse p-3" aria-labelledby="flush-headingOne" data-bs-parent="#personalInfo">
                     {{ form(user_form) }}
                 </div>
             </div>
         </div>
+
+        <div class="accordion accordion-flush" id="EducationInfo">
+            <div class="accordion-item border">
+                <h2 class="accordion-header" id="flush-headingEducation">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEducation" aria-expanded="false" aria-controls="flush-collapseEducation">
+                        Educacion
+                    </button>
+                </h2>
+                <div id="flush-collapseEducation" class="accordion-collapse collapse p-3" aria-labelledby="flush-headingEducation" data-bs-parent="#EducationInfo">
+                    {% include 'skeletons/education.html.twig' %}
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/education.js') }}"></script>
 {% endblock %}
