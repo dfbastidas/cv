@@ -31,6 +31,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="accordion accordion-flush" id="ExperienceInfo">
+            <div class="accordion-item border">
+                <h2 class="accordion-header" id="flush-headingExperience">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseExperience" aria-expanded="false" aria-controls="flush-collapseExperience">
+                        Experiencia
+                    </button>
+                </h2>
+                <div id="flush-collapseExperience" class="accordion-collapse collapse p-3" aria-labelledby="flush-headingExperience" data-bs-parent="#ExperienceInfo">
+                    {% include 'skeletons/experience.html.twig' %}
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 {% block javascripts %}

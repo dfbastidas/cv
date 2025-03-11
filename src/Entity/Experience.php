@@ -26,12 +26,24 @@ class Experience
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
-
     #[ORM\ManyToOne(inversedBy: 'experience')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    /**
+     * @param string|null $role
+     * @param \DateTimeInterface|null $start_date
+     * @param \DateTimeInterface|null $end_date
+     * @param string|null $description
+     */
+    public function __construct(?string $role, ?\DateTimeInterface $start_date, ?\DateTimeInterface $end_date, ?string $description)
+    {
+        $this->role = $role;
+        $this->start_date = $start_date;
+        $this->end_date = $end_date;
+        $this->description = $description;
+    }
+
 
     public function getId(): ?int
     {
@@ -82,18 +94,6 @@ class Experience
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
 
         return $this;
     }
