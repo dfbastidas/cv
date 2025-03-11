@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterType;
 use App\Form\UserType;
+use App\Service\FileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +17,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class UserController extends AbstractController
 {
     private $em;
+    private $fileService;
 
     /**
      * @param $em
      */
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em, FileService $fileService) {
         $this->em = $em;
+        $this->fileService = $fileService;
     }
 
     #[Route('/register', name: 'user_register')]
@@ -46,6 +49,14 @@ final class UserController extends AbstractController
     public function userProfile (Request $request) {
         $user = $this->getUser();
         $userForm = $this->createForm(UserType::class, $user);
+        $userForm->handleRequest($request);
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $file = $userForm->get('photo')->getData();
+            $fileName = $this->fileService->uploadFile($file);
+            $user->setPhoto($fileName);
+            $this->em->flush();
+            return  $this->redirectToRoute('user_profile');
+        }
         return $this->render('user/profile.html.twig', ['user_form' => $userForm->createView()]);
     }
 }
