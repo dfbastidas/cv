@@ -48,11 +48,19 @@ function loadExperience() {
             data.forEach(experience => {
                 const item = document.createElement("div");
                 item.classList.add("col-sm-6", "border"); // Agrega clases Bootstrap
+                item.id = `experience-${experience.id}`; // Agrega el ID único
+                const deleteUrl = `/user/delete-experience/${experience.id}`; // Ruta del backend
                 item.innerHTML = `
                 <div class="p-3">
                     <strong>${experience.role || "Sin especificar"}</strong> <br>
                     <small>(${formatDate(experience.start_date)} - ${formatDate(experience.end_date)})</small>
                     <span class="mt-2">${experience.description}</span> <!-- Permite HTML -->
+                    <button 
+                        class="btn btn-danger btn-sm mt-2" 
+                        data-url="${deleteUrl}"  
+                        onclick="deleteExperience(${experience.id}, this)">
+                            Eliminar
+                    </button>
                 </div>
             `;
                 userExperienceDiv.appendChild(item);
@@ -70,4 +78,23 @@ function formatDate(dateObj) {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
+}
+
+function deleteExperience(id, button) {
+    const deleteUrl = button.getAttribute("data-url");
+    fetch(deleteUrl, {
+        method: 'DELETE', // Asegura que el backend acepte DELETE, si no usa 'POST'
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`experience-${id}`).remove(); // Elimina del DOM si fue exitoso
+            } else {
+                alert("No tienes permiso para eliminar esta educación.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }

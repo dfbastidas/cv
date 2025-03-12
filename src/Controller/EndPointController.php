@@ -65,4 +65,15 @@ final class EndPointController extends AbstractController
         $experience = $this->em->getRepository(Experience::class)->getUserExperience($user);
         return  new JsonResponse($experience);
     }
+
+    #[Route('/delete-experience/{id}', name: 'delete_experience', methods: ['DELETE'])]
+    public function deleteExperience(Experience $experience): JsonResponse{
+        $user = $this->getUser();
+        if ($experience->getUser() === $user) {
+            $this->em->remove($experience);
+            $this->em->flush();
+            return  new JsonResponse(['success' => true]);
+        }
+        return new JsonResponse(['success' => false]);
+    }
 }
