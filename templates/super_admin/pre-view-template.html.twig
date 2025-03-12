@@ -1,100 +1,164 @@
 {% extends 'base.html.twig' %}
-{% block title %}¡Register!{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <meta name="viewport" content="width=1200, initial-scale=1.0">
-
     <style>
+        /* Reset absoluto para impresión */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
         body {
-            background-color: gray;
-            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
         }
 
-        .container-w-70-fluid {
-            --bs-gutter-x: 1.5rem;
-            --bs-gutter-y: 0;
-            width: 70%;
-            padding-right: calc(var(--bs-gutter-x) * 0.5);
-            padding-left: calc(var(--bs-gutter-x) * 0.5);
-            margin-right: auto;
-            margin-left: auto;
+        #cv-container {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
-
 
         .left-col {
-            background-color: #000;
-            color: #fff;
-            padding: 2rem;
-            min-height: 100vh;
+            width: 70mm;
+            height: 100%;
+            background: #2d2d2d;
+            color: white;
+            padding: 8mm;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
-        .profile-img {
-            max-width: 100%;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .name {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .section-title {
-            color: #e83e8c;
-            font-weight: bold;
-            margin-top: 1.5rem;
-            text-transform: uppercase;
-            font-size: 1.1rem;
-        }
+
         .right-col {
-            background-color: #fff;
-            padding: 2rem;
+            width: 140mm;
+            height: 100%;
+            padding: 8mm;
+            position: absolute;
+            left: 70mm;
+            top: 0;
         }
+
+        .profile-img {
+            width: 50mm;
+            height: 50mm;
+            object-fit: cover;
+            border-radius: 2mm;
+            margin-bottom: 8mm;
+        }
+
+        .name {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-bottom: 6mm;
+            line-height: 1.2;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            color: #e83e8c;
+            margin: 6mm 0 3mm 0;
+            padding-bottom: 1mm;
+            border-bottom: 0.5pt solid currentColor;
+            text-transform: uppercase;
+        }
+
+        .education-item {
+            margin: 4mm 0;
+            page-break-inside: avoid;
+        }
+
+        .education-item strong {
+            display: block;
+            font-size: 10pt;
+            margin-bottom: 1mm;
+        }
+
+        .education-item div {
+            font-size: 9pt;
+            color: #cccccc;
+        }
+
+        .experience-item {
+            margin: 6mm 0;
+            page-break-inside: avoid;
+        }
+
+        .experience-date {
+            font-size: 9pt;
+            color: #666666;
+            margin: 2mm 0;
+        }
+
+        .experience-description {
+            font-size: 10pt;
+            line-height: 1.4;
+            margin-top: 3mm;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                display: block !important;
+            }
+            #cv-container {
+                box-shadow: none;
+                margin: 0;
+            }
+        }
+
         p {
             margin: 0 0; /* Reduce el espacio arriba y abajo */
             line-height: 1.2; /* Ajusta la altura de línea para mejorar legibilidad */
         }
     </style>
 {% endblock %}
+
 {% block body %}
-    <div class="container-w-70-fluid">
-        <div class="row">
-            <!-- Left Column -->
-            <div class="col-md-4 left-col">
-                <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Profile" class="profile-img" />
-                <div class="name">{{ app.user.name | title }} {{ app.user.lastname | title }}</div>
-                <div class="section-title">About Me</div>
-                <p>
-                    {{ app.user.aboutme }}
-                </p>
+    <div id="cv-container">
+        <!-- Columna Izquierda -->
+        <div class="left-col">
+            <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Profile" class="profile-img" />
+            <div class="name">{{ app.user.name | title }} {{ app.user.lastname | title }}</div>
 
-                <div class="section-title">
-                    <div>Education</div>
+            <div class="section-title">About Me</div>
+            <p class="experience-description">{{ app.user.aboutme }}</p>
+
+            <div class="section-title">Education</div>
+            {% for education in app.user.education %}
+                <div class="education-item">
+                    {% if not loop.first %}<hr style="margin: 3mm 0">{% endif %}
+                    <strong>{{ education.degree }}</strong>
+                    <div>{{ education.almamater }}</div>
+                    <div>({{ education.startdate | date("M Y") }} - {{ education.enddate | date("M Y") }})</div>
                 </div>
-                {% for education in app.user.education  %}
-                    <div class="my-2">
-                        {% if not loop.first %}
-                            <hr>
-                        {% endif %}
-                        <strong>{{ education.degree }}</strong>
-                        <div>{{ education.almamater }}</div>
-                        <div>({{ education.startdate | date ("d-M-Y", "America/Bogota") }} - {{ education.enddate | date ("d-M-Y", "America/Bogota") }})</div>
-                    </div>
-                {% endfor %}
+            {% endfor %}
+        </div>
 
-            </div>
-            <!-- Right Column -->
-            <div class="col-md-8 right-col">
-                <h2 class="section-title">Experiences</h2>
-                {% for experience in app.user.experience %}
-                    {% if not loop.first %}
-                        <hr>
-                    {% endif %}
-                    <div>
-                        <h4>{{ experience.role | upper }}</h4>
-                        <div class="mb-3"><small>({{ experience.startdate | date ("d-M-Y", "America/Bogota")}} - {{ experience.enddate | date ("d-M-Y", "America/Bogota") }})</small></div>
-                        <div>{{ experience.description | raw }}</div>
+        <!-- Columna Derecha -->
+        <div class="right-col">
+            <div class="section-title">Experiences</div>
+            {% for experience in app.user.experience %}
+                <div class="experience-item">
+                    {% if not loop.first %}<hr style="margin: 4mm 0">{% endif %}
+                    <h4 style="font-size: 11pt; margin: 0">{{ experience.role | upper }}</h4>
+                    <div class="experience-date">
+                        ({{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }})
                     </div>
-                {% endfor %}
-            </div>
+                    <div class="experience-description">{{ experience.description | raw }}</div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
