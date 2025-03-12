@@ -16,4 +16,16 @@ class ExperienceRepository extends ServiceEntityRepository
         parent::__construct($registry, Experience::class);
     }
 
+    public function getUserExperience($user) {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT experience
+                FROM App\Entity\Experience experience
+                JOIN experience.user user
+                WHERE user.id =:user
+                ORDER BY user.id DESC
+            ')->setParameter('user', $user)
+            ->getArrayResult();
+    }
+
 }

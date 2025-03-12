@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success) {
                 console.log("Education saved successfully!");
                 fields.forEach(id => (document.getElementById(id).value = ""));
+                loadEducation()
             } else {
                 console.error("Error saving education.");
             }
@@ -25,9 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error:", error);
         }
     });
+    loadEducation()
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+function loadEducation() {
     const userEducationDiv = document.getElementById("user-education");
     const url = userEducationDiv.getAttribute("data-url");
 
@@ -53,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         })
         .catch(error => console.error('Error:', error));
-});
+}
 
 function formatDate(dateObj) {
     if (!dateObj || !dateObj.date) return "N/A"; // Maneja valores nulos o indefinidos

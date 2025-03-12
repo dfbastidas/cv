@@ -47,4 +47,11 @@ final class EndPointController extends AbstractController
         $this->em->flush();
         return new JsonResponse(['success' => true]);
     }
+
+    #[Route('/get-experience', name: 'get_experience')]
+    public function getExperience(): JsonResponse {
+        $user = $this->getUser();
+        $experience = $this->em->getRepository(Experience::class)->getUserExperience($user);
+        return  new JsonResponse($experience);
+    }
 }
