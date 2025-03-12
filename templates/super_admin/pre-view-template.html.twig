@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+{% block title %}¡Register!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <meta name="viewport" content="width=1200, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: gray;
+            font-family: Arial, sans-serif;
+        }
+
+        .container-w-70-fluid {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            width: 70%;
+            padding-right: calc(var(--bs-gutter-x) * 0.5);
+            padding-left: calc(var(--bs-gutter-x) * 0.5);
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+
+        .left-col {
+            background-color: #000;
+            color: #fff;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .profile-img {
+            max-width: 100%;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .section-title {
+            color: #e83e8c;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+        }
+        .right-col {
+            background-color: #fff;
+            padding: 2rem;
+        }
+        p {
+            margin: 0 0; /* Reduce el espacio arriba y abajo */
+            line-height: 1.2; /* Ajusta la altura de línea para mejorar legibilidad */
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="container-w-70-fluid">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-4 left-col">
+                <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Profile" class="profile-img" />
+                <div class="name">{{ app.user.name | title }} {{ app.user.lastname | title }}</div>
+                <div class="section-title">About Me</div>
+                <p>
+                    {{ app.user.aboutme }}
+                </p>
+
+                <div class="section-title">
+                    <div>Education</div>
+                </div>
+                {% for education in app.user.education  %}
+                    <div class="my-2">
+                        {% if not loop.first %}
+                            <hr>
+                        {% endif %}
+                        <strong>{{ education.degree }}</strong>
+                        <div>{{ education.almamater }}</div>
+                        <div>({{ education.startdate | date ("d-M-Y", "America/Bogota") }} - {{ education.enddate | date ("d-M-Y", "America/Bogota") }})</div>
+                    </div>
+                {% endfor %}
+
+            </div>
+            <!-- Right Column -->
+            <div class="col-md-8 right-col">
+                <h2 class="section-title">Experiences</h2>
+                {% for experience in app.user.experience %}
+                    {% if not loop.first %}
+                        <hr>
+                    {% endif %}
+                    <div>
+                        <h4>{{ experience.role | upper }}</h4>
+                        <div class="mb-3"><small>({{ experience.startdate | date ("d-M-Y", "America/Bogota")}} - {{ experience.enddate | date ("d-M-Y", "America/Bogota") }})</small></div>
+                        <div>{{ experience.description | raw }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
