@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    const saveExperienceButton = document.getElementById('save-experience');
+
+    // https://quilljs.com/playground/snow
     const quill = new Quill('#editor', {
         theme: 'snow'
     });
 
-    const saveExperienceButton = document.getElementById('save-experience');
     saveExperienceButton.addEventListener("click", async () => {
         const url = saveExperienceButton.getAttribute("data-url");
 
@@ -17,9 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(experienceData)
             });
-
             const data = await response.json();
-
             if (data.success) {
                 console.log("Education saved successfully!");
                 fields.forEach(id => (document.getElementById(id).value = ""));
