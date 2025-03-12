@@ -30,6 +30,13 @@ final class EndPointController extends AbstractController
         return new JsonResponse(['success' => true]);
     }
 
+    #[Route('/get-education', name: 'get_education')]
+    public function getEducation(): JsonResponse {
+        $user = $this->getUser();
+        $education = $this->em->getRepository(Education::class)->getUserEducation($user);
+        return new JsonResponse($education);
+    }
+
     #[Route('/save-experience', name: 'save_experience')]
     public function saveExperience(Request $request): JsonResponse {
         $user = $this->getUser();

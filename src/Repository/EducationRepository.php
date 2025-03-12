@@ -16,28 +16,15 @@ class EducationRepository extends ServiceEntityRepository
         parent::__construct($registry, Education::class);
     }
 
-    //    /**
-    //     * @return Education[] Returns an array of Education objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Education
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getUserEducation($user) {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT education
+                FROM App\Entity\Education education
+                JOIN education.user user
+                WHERE user.id =:user
+                ORDER BY user.id DESC
+            ')->setParameter('user', $user)
+            ->getArrayResult();
+    }
 }
