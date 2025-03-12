@@ -81,6 +81,10 @@ function formatDate(dateObj) {
 }
 
 function deleteExperience(id, button) {
+    if (!confirm("¿Estás seguro de que deseas eliminar esta experiencia?")) {
+        return; // Detiene la ejecución si el usuario cancela
+    }
+
     const deleteUrl = button.getAttribute("data-url");
     fetch(deleteUrl, {
         method: 'DELETE', // Asegura que el backend acepte DELETE, si no usa 'POST'

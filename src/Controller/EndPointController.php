@@ -67,7 +67,7 @@ final class EndPointController extends AbstractController
     }
 
     #[Route('/delete-experience/{id}', name: 'delete_experience', methods: ['DELETE'])]
-    public function deleteExperience(Experience $experience): JsonResponse{
+    public function deleteExperience(Experience $experience): JsonResponse {
         $user = $this->getUser();
         if ($experience->getUser() === $user) {
             $this->em->remove($experience);
