@@ -45,10 +45,18 @@ function loadEducation() {
             data.forEach(edu => {
                 const item = document.createElement("div");
                 item.classList.add("col-sm-4", "border"); // Se agregan las clases correctamente
+                item.id = `education-${edu.id}`; // Agrega el ID único
+                const deleteUrl = `/user/delete-education/${edu.id}`; // Ruta del backend
                 item.innerHTML = `
                 <div class="p-3">
                     <strong>${edu.degree}</strong> - ${edu.alma_mater} <br>
                     <small>(${formatDate(edu.start_date)} - ${formatDate(edu.end_date)})</small>
+                    <button 
+                        class="btn btn-danger btn-sm mt-2" 
+                        data-url="${deleteUrl}"  
+                        onclick="deleteEducation(${edu.id}, this)">
+                            Eliminar
+                    </button>
                 </div>
             `;
                 userEducationDiv.appendChild(item);
@@ -59,14 +67,30 @@ function loadEducation() {
 
 function formatDate(dateObj) {
     if (!dateObj || !dateObj.date) return "N/A"; // Maneja valores nulos o indefinidos
-
     const date = new Date(dateObj.date);
     if (isNaN(date.getTime())) return "Fecha inválida"; // Maneja errores de conversión
-
     // Formateo manual a DD-MM-YYYY
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // +1 porque los meses van de 0 a 11
     const year = date.getFullYear();
-
     return `${day}-${month}-${year}`;
+}
+
+function deleteEducation(id, button) {
+    const deleteUrl = button.getAttribute("data-url");
+    fetch(deleteUrl, {
+        method: 'DELETE', // Asegura que el backend acepte DELETE, si no usa 'POST'
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`education-${id}`).remove(); // Elimina del DOM si fue exitoso
+            } else {
+                alert("No tienes permiso para eliminar esta educación.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }

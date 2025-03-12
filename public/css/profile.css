@@ -1,0 +1,5 @@
+#user-experience, #user-education {
+    word-wrap: break-word; /* Rompe palabras largas */
+    overflow-wrap: break-word; /* Rompe palabras dentro del contenedor */
+    white-space: normal; /* Permite saltos de línea */
+}

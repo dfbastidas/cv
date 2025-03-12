@@ -37,6 +37,17 @@ final class EndPointController extends AbstractController
         return new JsonResponse($education);
     }
 
+    #[Route('/delete-education/{id}', name: 'delete_education', methods: ['DELETE'])]
+    public function deleteEducation(Education $education) {
+        $user = $this->getUser();
+        if ($education->getUser() == $user) {
+            $this->em->remove($education);
+            $this->em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+        return new JsonResponse(['success' => false]);
+    }
+
     #[Route('/save-experience', name: 'save_experience')]
     public function saveExperience(Request $request): JsonResponse {
         $user = $this->getUser();
