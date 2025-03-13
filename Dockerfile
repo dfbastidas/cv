@@ -38,6 +38,7 @@ RUN apt-get install -y --no-install-recommends \
     php8.2-curl \
     php8.2-intl \
     php8.2-mongodb \
+    wkhtmltopdf \
     php8.2-apcu && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -58,9 +59,8 @@ WORKDIR /var/www/html/cv
 COPY . .
 
 # Permisos y optimización
-RUN chown -R www-data:www-data var/ && \
-    composer install --no-dev --optimize-autoloader
+RUN chown -R www-data:www-data var/
 
 # Comando de inicio
-#CMD bash -c "composer install && php bin/console doctrine:schema:update --force && /usr/sbin/apache2ctl -D FOREGROUND"
-CMD bash -c "composer install && /usr/sbin/apache2ctl -D FOREGROUND"
+CMD bash -c "composer install && php bin/console doctrine:schema:update --force && /usr/sbin/apache2ctl -D FOREGROUND"
+# CMD bash -c "composer install && /usr/sbin/apache2ctl -D FOREGROUND"
