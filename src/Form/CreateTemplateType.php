@@ -13,6 +13,9 @@ class CreateTemplateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name')
+            ->add('thumbnail')
+            ->add('description')
             ->add('html')
             ->add('save', SubmitType::class)
         ;

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}¡My CV!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        {% for template in templates %}
+            {{ dump(template) }}
+        {% endfor %}
+    </div>
+{% endblock %}
