@@ -3,8 +3,9 @@
 {% block title %}¡My CV!{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+
 {% endblock %}
 {% block body %}
     {{ parent() }}
@@ -54,5 +55,4 @@
     {{ parent() }}
     <script src="{{ asset('js/education.js') }}"></script>
     <script src="{{ asset('js/experience.js') }}"></script>
-    <script src="{{ asset('js/quill.js') }}"></script>
 {% endblock %}
