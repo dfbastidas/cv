@@ -45,17 +45,7 @@ final class SuperAdminController extends AbstractController
         return $this->render('super_admin/pre-view-template.html.twig');
     }
 
-    #[Route('/view-template/{id}', name: 'view_templates')]
-    public function viewTemplate(CvTemplate $cvTemplate, \Twig\Environment $twig) {
-        $templateContent = $cvTemplate->getHtml();
 
-        // Renderiza el Twig directamente sin cambiar el loader
-        $renderedTemplate = $twig->createTemplate($templateContent)->render([
-            'some_variable' => 'value',
-        ]);
-
-        return new Response($renderedTemplate);
-    }
 
 
 }

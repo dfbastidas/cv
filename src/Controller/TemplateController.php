@@ -30,4 +30,16 @@ final class TemplateController extends AbstractController
             'templates' => $templates
         ]);
     }
+
+    #[Route('/view/{id}', name: 'view_templates')]
+    public function viewTemplate(CvTemplate $cvTemplate, \Twig\Environment $twig) {
+        $templateContent = $cvTemplate->getHtml();
+
+        // Renderiza el Twig directamente sin cambiar el loader
+        $renderedTemplate = $twig->createTemplate($templateContent)->render([
+            'some_variable' => 'value',
+        ]);
+
+        return new Response($renderedTemplate);
+    }
 }
