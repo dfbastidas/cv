@@ -20,7 +20,7 @@ class FileService {
         $this->s3 = new S3Client($s3Params);
     }
 
-    public function uploadFile($file) {
+    public function uploadFile($file, $bucketName) {
         if ($file) {
             $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFileName = $this->slugger->slug($originalFileName);
@@ -28,7 +28,7 @@ class FileService {
             try {
                 $file_contents = file_get_contents($file->getRealPath());
                 $this->s3->putObject([
-                    'Bucket' => $_ENV['AWS_BUCKET_NAME'],
+                    'Bucket' => $bucketName,
                     'Key' => $newFileName,
                     'Body' => $file_contents,
                 ]);

@@ -52,7 +52,7 @@ final class UserController extends AbstractController
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $file = $userForm->get('photo')->getData();
-            $fileName = $this->fileService->uploadFile($file);
+            $fileName = $this->fileService->uploadFile($file, $_ENV['AWS_BUCKET_NAME']);
             $user->setPhoto($fileName);
             $this->em->flush();
             return  $this->redirectToRoute('user_profile');

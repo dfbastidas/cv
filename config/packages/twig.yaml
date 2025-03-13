@@ -1,6 +1,7 @@
 twig:
     globals:
         aws_bucket_cv_media_pics_url: '%env(AWS_BUCKET_URL)%'
+        aws_bucket_cv_template_pics_url: '%env(AWS_TEMPLATES_URL)%'
     form_themes: ['bootstrap_5_layout.html.twig']
     file_name_pattern: '*.twig'
 
