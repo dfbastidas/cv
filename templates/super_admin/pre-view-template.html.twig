@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
     <style>
+        /* Reset absoluto para impresión */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
         body {
             background: #f0f0f0;
             display: flex;
@@ -13,96 +18,169 @@
             align-items: center;
             min-height: 100vh;
             font-family: 'Arial', sans-serif;
+            overflow: auto;
         }
+
         #cv-container {
             width: 210mm;
+            min-width: 210mm;
             height: 297mm;
             background: white;
-            display: flex;
-            flex-direction: row;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            margin: 20px auto;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transform-origin: top center;
         }
+
         .left-col {
             width: 70mm;
-            background: #343a40;
+            height: 100%;
+            background: #2d2d2d;
             color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            padding: 8mm;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
-        .profile-img {
-            width: 60mm;
-            height: 60mm;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
+
         .right-col {
-            width: calc(210mm - 70mm);
-            padding: 20px;
+            width: 140mm;
+            height: 100%;
+            padding: 8mm;
+            position: absolute;
+            left: 70mm;
+            top: 0;
         }
-        .section-title {
-            font-size: 14pt;
-            color: #007bff;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 5px;
+
+        .profile-img {
+            width: 50mm;
+            height: 50mm;
+            object-fit: cover;
+            border-radius: 2mm;
+            margin-bottom: 8mm;
         }
-        .experience-item, .education-item {
-            margin-bottom: 15px;
-        }
-        .experience-title, .education-title {
-            font-size: 12pt;
+
+        .name {
+            font-size: 16pt;
             font-weight: bold;
+            margin-bottom: 6mm;
+            line-height: 1.2;
         }
-        .experience-date, .education-date {
+
+        .section-title {
+            font-size: 12pt;
+            color: #e83e8c;
+            margin: 6mm 0 3mm 0;
+            padding-bottom: 1mm;
+            border-bottom: 0.5pt solid currentColor;
+            text-transform: uppercase;
+        }
+
+        .education-item {
+            margin: 4mm 0;
+            page-break-inside: avoid;
+        }
+
+        .education-item strong {
+            display: block;
             font-size: 10pt;
-            color: #666;
+            margin-bottom: 1mm;
         }
+
+        .education-item div {
+            font-size: 9pt;
+            color: #cccccc;
+        }
+
+        .experience-item {
+            margin: 6mm 0;
+            page-break-inside: avoid;
+        }
+
+        .experience-date {
+            font-size: 9pt;
+            color: #666666;
+            margin: 2mm 0;
+        }
+
+        .experience-description {
+            font-size: 10pt;
+            line-height: 1.4;
+            margin-top: 3mm;
+        }
+
         @media print {
             body {
                 background: white !important;
+                display: block !important;
+                overflow: hidden !important;
             }
             #cv-container {
                 box-shadow: none;
+                margin: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.2;
+            font-size: 10pt;
+        }
+
+        @media screen {
+            #cv-container {
+                transform: scale(0.9);
             }
         }
         p {
-            margin: 0 0; /* Reduce el espacio arriba y abajo */
-            line-height: 1.2; /* Ajusta la altura de línea para mejorar legibilidad */
+            margin: 0;
+            line-height: 1.2;
+            font-size: 10pt;
         }
     </style>
-</head>
-<body>
-<div id="cv-container">
-    <div class="left-col">
-        <img src="https://cv-media-bucket.s3.us-east-1.amazonaws.com/355122826-1454707415282578-4640491496198457287-n-67d1bb09a3d2c.jpg" class="profile-img" alt="Profile Picture">
-        <h2>Diego Bastidas</h2>
-        <p class="experience-description">A punctual person, educated with ethical principles, He likes take on challenges, with an advance domain in english language focused on the
-            continiusly lecture about science articles and technical documentation. he never stop learning and with high level about learning and continuously improving in work.</p>
-    </div>
-    <div class="right-col">
-        <div class="section-title">Experiences</div>
-        <div class="experience-item">
-            <h4 style="font-size: 11pt; margin: 0">LEAD FULL STACK DEVELOPER</h4>
-            <div class="experience-date">
-                (Jan 2024 - Dec 2021)
-            </div>
-            <div class="experience-description"><p>Migration of a Legacy Platform to Modern Technologies with a Focus on AWS Integration</p><p><br></p><p>Led the migration of a legacy platform to a modern architecture, focusing on AWS cloud integration and best DevOps practices. Coordinated the development team, ensuring successful execution and adoption of new technologies. </p><p><br></p><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Cloud&nbsp;Migration&nbsp;and&nbsp;Infrastructure&nbsp;Optimization</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Dockerization&nbsp;to&nbsp;ensure&nbsp;consistency&nbsp;across&nbsp;environments&nbsp;</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Process&nbsp;automation&nbsp;using&nbsp;Linux&nbsp;CronTab&nbsp;</li></ol><p><br></p><p><strong>Technologies &amp; Skills:</strong></p><p> PHP, Symfony, AWS (RDS, S3, AWS CLI, AWS SDK), MongoDB, Docker, Bash Scripting, Linux (Ubuntu), Apache. </p><p>Direct Supervisor: Eduardo Rosero +57 3042113448 </p><p><br></p></div>
+{% endblock %}
+
+{% block body %}
+    <div id="cv-container">
+        <!-- Columna Izquierda -->
+        <div class="left-col">
+            <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Profile" class="profile-img" />
+            <div class="name">{{ app.user.name | title }} {{ app.user.lastname | title }}</div>
+
+            <div class="section-title">About Me</div>
+            <p class="experience-description">{{ app.user.aboutme }}</p>
+
+            <div class="section-title">Education</div>
+            {% for education in app.user.education %}
+                <div class="education-item">
+                    {% if not loop.first %}<hr style="margin: 3mm 0">{% endif %}
+                    <strong>{{ education.degree }}</strong>
+                    <div>{{ education.almamater }}</div>
+                    <div>({{ education.startdate | date("M Y") }} - {{ education.enddate | date("M Y") }})</div>
+                </div>
+            {% endfor %}
         </div>
-        <div class="experience-item">
-            <hr style="margin: 4mm 0">                    <h4 style="font-size: 11pt; margin: 0">DEVOPS ENGINEER</h4>
-            <div class="experience-date">
-                (Oct 2020 - Dec 2023)
-            </div>
-            <div class="experience-description"><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Developed and maintained Drupal modules to optimize DevOps practices within the company.</span></p><p><br></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Create Docker configurations for the main projects of the company with the objective of reducing the training time of new collaborators.</span></p><p><br></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Developed automated Jenkins jobs for SonarQube code analysis, triggered on every repository push.</span></p><p><br></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Integrated JWT authentication into a Symfony-based platform to track and evaluate project quality and status.</span></p><p><br></p><p><strong style="color: rgb(33, 37, 41); background-color: rgb(255, 255, 255);">Abilities Required:</strong></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Php, Symfony, JWT, Docker, Git, Jenkins, CI/CD, AWS, S3, EC2, Drupal, Ubuntu,</span></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Nginx, PHP-FPM, VHOST, Javascript, Bootstrap, Bash shell, Scripting, mysql, mongodb</span></p><p><br></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(33, 37, 41);">Direct supervisor: Carolina Poveda Phone: +57 3163521232</span></p><p><br></p></div>
+
+        <!-- Columna Derecha -->
+        <div class="right-col">
+            <div class="section-title">Experiences</div>
+            {% for experience in app.user.experience %}
+                <div class="experience-item">
+                    {% if not loop.first %}<hr style="margin: 4mm 0">{% endif %}
+                    <h4 style="font-size: 11pt; margin: 0">{{ experience.role | upper }}</h4>
+                    <div class="experience-date">
+                        ({{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }})
+                    </div>
+                    <div class="experience-description">{{ experience.description | raw }}</div>
+                </div>
+            {% endfor %}
         </div>
     </div>
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block javascripts %}
+    {# JavaScript completamente eliminado #}
+{% endblock %}
