@@ -30,6 +30,8 @@ class CreateTemplateType extends AbstractType
             ])
             ->add('description')
             ->add('html')
+            ->add('page_width')
+            ->add('page_height')
             ->add('save', SubmitType::class)
         ;
     }
