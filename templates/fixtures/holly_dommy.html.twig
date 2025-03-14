@@ -157,18 +157,37 @@
     <div id="cv-container">
         <!-- Columna Izquierda -->
         <div class="left-col">
+            {% if app.user.photo is not empty %}
             <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Profile" class="profile-img" />
+            {% endif %}
+
             <div class="name">{{ app.user.name | title }} {{ app.user.lastname | title }}</div>
 
-            <div class="section-title">About Me</div>
-            <p class="experience-description">{{ app.user.aboutme }}</p>
-            <div class="section-title">Contact</div>
-            <p class="my-3">{{ app.user.mainemail }}</p>
-            <p class="my-2"><i class="fa-solid fa-house"></i> - {{ app.user.location }}</p>
-            <p class="my-2"><i class="fa-solid fa-phone"></i> - {{ app.user.mainphone }}</p>
+            {% if app.user.aboutme is not empty %}
+                <div class="section-title">About Me</div>
+                <p class="experience-description">{{ app.user.aboutme }}</p>
+            {% endif %}
+
+            {% if app.user.mainemail is not empty or app.user.mainphone is not empty %}
+                <div class="section-title">Contact</div>
+            {% endif %}
+
+            {% if app.user.mainemail is not empty %}
+                <p class="my-3">{{ app.user.mainemail }}</p>
+            {% endif %}
+
+            {% if app.user.location is not empty %}
+                <p class="my-2"><i class="fa-solid fa-house"></i> - {{ app.user.location }}</p>
+            {% endif %}
+
+            {% if app.user.mainphone %}
+                <p class="my-2"><i class="fa-solid fa-phone"></i> - {{ app.user.mainphone }}</p>
+            {% endif %}
 
 
-            <div class="section-title">Education</div>
+            {% if app.user.education | length > 0 %}
+                <div class="section-title">Education</div>
+            {% endif %}
             {% for education in app.user.education %}
                 <div class="education-item">
                     {% if not loop.first %}<hr style="margin: 3mm 0">{% endif %}
@@ -182,7 +201,9 @@
 
         <!-- Columna Derecha -->
         <div class="right-col">
-            <div class="section-title">Experiences</div>
+            {% if app.user.experience  | length > 0 %}
+                <div class="section-title">Experiences</div>
+            {% endif %}
             {% for experience in app.user.experience %}
                 <div class="experience-item">
                     {% if not loop.first %}<hr style="margin: 4mm 0">{% endif %}
