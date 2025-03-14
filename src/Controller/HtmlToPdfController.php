@@ -10,7 +10,7 @@ use Knp\Snappy\Pdf;
 
 final class HtmlToPdfController extends AbstractController
 {
-    #[Route('/html/to/pdf/{id}', name: 'app_html_to_pdf')]
+    #[Route('/html/to/pdf/{id}', name: 'html_to_pdf')]
     public function index(CvTemplate $cvTemplate, Pdf $knpSnappyPdf, \Twig\Environment $twig): Response {
         $templateContent = $cvTemplate->getHtml();
 
@@ -21,8 +21,8 @@ final class HtmlToPdfController extends AbstractController
 
         // Generar PDF
         $pdf = $knpSnappyPdf->getOutputFromHtml($renderedTemplate,  [
-            'page-width' => '160mm',   // Ancho personalizado
-            'page-height' => '227mm',  // Alto estándar
+            'page-width' => $cvTemplate->getPageWidth(),
+            'page-height' => $cvTemplate->getPageHeight(),
             'margin-top' => '0mm',
             'margin-right' => '0mm',
             'margin-bottom' => '0mm',

@@ -15,6 +15,7 @@
                         <div>{{ template.creationdate | date | date("D-M-Y") }}</div>
                         <div>
                             <a href="{{ path('view_templates' , {id: template.id}) }}" class="btn btn-outline-success">Ver</a>
+                            <a href="{{ path('html_to_pdf', {id: template.id}) }}">Descarga</a>
                         </div>
                     </div>
                 </div>

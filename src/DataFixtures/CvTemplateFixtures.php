@@ -11,11 +11,16 @@ class CvTemplateFixtures extends Fixture {
         $hollyDommy->setThumbnail('Captura-de-Pantalla-2025-03-12-a-la-s-2-59-12-p-m-67d32e7bd84d2.png');
         $hollyDommy->setName('holly dommy');
         $hollyDommy->setHtml(file_get_contents(__DIR__ . '/../../templates/fixtures/holly_dommy.html.twig'));
+        $hollyDommy->setPageWidth('160mm');
+        $hollyDommy->setPageHeight('227mm');
 
         $hollyMommy = new CvTemplate();
         $hollyMommy->setThumbnail('Captura-de-Pantalla-2025-03-13-a-la-s-10-48-31-a-m-67d2fe65111f7.png');
         $hollyMommy->setName('Holly Mommy');
         $hollyMommy->setHtml(file_get_contents(__DIR__ . '/../../templates/fixtures/holly_mommy.html.twig'));
+        $hollyMommy->setPageWidth('160mm');
+        $hollyMommy->setPageHeight('227mm');
+
 
         $manager->persist($hollyDommy);
         $manager->persist($hollyMommy);

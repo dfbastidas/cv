@@ -32,6 +32,12 @@ class CvTemplate
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $page_width = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $page_height = null;
+
     
     public function __construct() {
         $this->creation_date = new \DateTime();
@@ -111,6 +117,30 @@ class CvTemplate
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPageWidth(): ?string
+    {
+        return $this->page_width;
+    }
+
+    public function setPageWidth(?string $page_width): static
+    {
+        $this->page_width = $page_width;
+
+        return $this;
+    }
+
+    public function getPageHeight(): ?string
+    {
+        return $this->page_height;
+    }
+
+    public function setPageHeight(string $page_height): static
+    {
+        $this->page_height = $page_height;
 
         return $this;
     }
