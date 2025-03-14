@@ -2,25 +2,40 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
         body {
             background: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             font-family: 'Arial', sans-serif;
+            overflow: auto; /* Enables scrolling on small screens */
+            margin: 0;
+            padding: 0;
         }
+
+        /* Fixed A4 Container */
         #cv-container {
             width: 210mm;
             height: 297mm;
             background: white;
-            display: flex;
-            flex-direction: row;
+            position: relative;
+            margin: 20px auto; /* Centers the CV horizontally */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
         }
+
+        /* Left Column (Fixed Position) */
         .left-col {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 70mm;
+            height: 100%;
             background: #343a40;
             color: white;
             padding: 20px;
@@ -29,6 +44,7 @@
             align-items: center;
             text-align: center;
         }
+
         .profile-img {
             width: 60mm;
             height: 60mm;
@@ -36,10 +52,18 @@
             border-radius: 50%;
             margin-bottom: 15px;
         }
+
+        /* Right Column (Fixed Position) */
         .right-col {
+            position: absolute;
+            top: 0;
+            left: 70mm;
             width: calc(210mm - 70mm);
+            height: 100%;
             padding: 20px;
+            overflow: hidden;
         }
+
         .section-title {
             font-size: 14pt;
             color: #007bff;
@@ -47,30 +71,41 @@
             border-bottom: 2px solid #007bff;
             padding-bottom: 5px;
         }
+
         .experience-item, .education-item {
             margin-bottom: 15px;
         }
+
         .experience-title, .education-title {
             font-size: 12pt;
             font-weight: bold;
         }
+
         .experience-date, .education-date {
             font-size: 10pt;
             color: #666;
         }
+
+        p {
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* Print Styles */
         @media print {
             body {
                 background: white !important;
             }
             #cv-container {
                 box-shadow: none;
+                margin: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
             }
         }
-        p {
-            margin: 0 0; /* Reduce el espacio arriba y abajo */
-            line-height: 1.2; /* Ajusta la altura de línea para mejorar legibilidad */
-        }
     </style>
+
 {% endblock %}
 
 {% block body %}
