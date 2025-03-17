@@ -22,8 +22,16 @@ class CvTemplateFixtures extends Fixture {
         $hollyMommy->setPageHeight('227mm');
 
 
+        $grayIsLife = new CvTemplate();
+        $grayIsLife->setThumbnail('Captura-de-Pantalla-2025-03-17-a-la-s-2-07-55-p-m-67d8737073394.png');
+        $grayIsLife->setName('Gray Is Life');
+        $grayIsLife->setHtml(file_get_contents(__DIR__ . '/../../templates/fixtures/gray_is_life.html.twig'));
+        $grayIsLife->setPageWidth('180mm');
+        $grayIsLife->setPageHeight('235mm');
+
         $manager->persist($hollyDommy);
         $manager->persist($hollyMommy);
+        $manager->persist($grayIsLife);
         $manager->flush();
     }
 }

@@ -139,9 +139,9 @@
                     {% for education in app.user.education %}
                         {% if not loop.first %}<hr style="margin: 3mm 0">{% endif %}
                         <small>
-                        <div><strong>{{ education.degree | title }}</strong></div>
-                        <div>{{ education.almamater }}</div>
-                        <div>({{ education.startdate | date("Y") }} - {{ education.enddate | date("Y") }})</div>
+                            <div><strong>{{ education.degree | title }}</strong></div>
+                            <div>{{ education.almamater }}</div>
+                            <div>({{ education.startdate | date("Y") }} - {{ education.enddate | date("Y") }})</div>
                         </small>
                     {% endfor %}
                 </div>
