@@ -197,6 +197,15 @@
                 </div>
             {% endfor %}
 
+            {% if app.user.links | length > 0 %}
+                <div class="section-title">Enlaces</div>
+            {% endif %}
+            {% for link in app.user.links %}
+                <div class="link-item">
+                    <a href="{{ link.link }}">{{ link.label }}</a>
+                </div>
+            {% endfor %}
+
         </div>
 
         <!-- Columna Derecha -->
@@ -208,9 +217,11 @@
                 <div class="experience-item">
                     {% if not loop.first %}<hr style="margin: 4mm 0">{% endif %}
                     <h4 style="font-size: 11pt; margin: 0">{{ experience.role | upper }}</h4>
-                    <div class="experience-date">
-                        ({{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }})
-                    </div>
+                    {% if experience.startdate %}
+                        <div class="experience-date">
+                            ({{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }})
+                        </div>
+                    {% endif %}
                     <div class="experience-description">{{ experience.description | raw }}</div>
                 </div>
             {% endfor %}

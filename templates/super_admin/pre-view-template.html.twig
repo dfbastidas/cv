@@ -76,7 +76,7 @@
             text-transform: uppercase;
         }
 
-        .education-item {
+        .education-item, .link-item {
             margin: 4mm 0;
             page-break-inside: avoid;
         }
@@ -194,6 +194,15 @@
                     <strong>{{ education.degree }}</strong>
                     <div>{{ education.almamater }}</div>
                     <div>({{ education.startdate | date("M Y") }} - {{ education.enddate | date("M Y") }})</div>
+                </div>
+            {% endfor %}
+
+            {% if app.user.links | length > 0 %}
+                <div class="section-title">Enlaces</div>
+            {% endif %}
+            {% for link in app.user.links %}
+                <div class="link-item">
+                    <a href="{{ link.link }}" style="color: white" target="_blank">{{ link.label | capitalize}}</a>
                 </div>
             {% endfor %}
 
