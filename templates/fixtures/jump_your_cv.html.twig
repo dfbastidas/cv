@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: stretch;
+            border: 1px solid #000; /* For preview purposes */
+        }
+
+        .sidebar {
+            width: 70mm;
+            background-color: #222;
+            color: #fff;
+            padding: 10mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar img {
+            width: 50mm;
+            height: 50mm;
+            margin-bottom: 10mm;
+        }
+
+        .sidebar h2 {
+            font-size: 12pt;
+            margin-bottom: 5mm;
+        }
+
+        .sidebar p {
+            font-size: 10pt;
+            line-height: 1.5;
+            margin-bottom: 5mm;
+        }
+
+        .skills {
+            margin-top: 10mm;
+        }
+
+        .skills h2 {
+            font-size: 12pt;
+            margin-bottom: 5mm;
+        }
+
+        .skill-bar {
+            background-color: #444;
+            height: 2mm;
+            margin-bottom: 5mm;
+        }
+
+        .skill-bar-filled {
+            background-color: #fff;
+            height: 2mm;
+        }
+
+        .content {
+            flex-grow: 1;
+            background-color: #fff;
+            padding: 10mm;
+        }
+
+        .content h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 5mm;
+        }
+
+        .content h1 span {
+            background-color: #ffeb3b;
+            padding: 0 2mm;
+        }
+
+        .content p {
+            font-size: 10pt;
+            color: #666;
+            margin-bottom: 5mm;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 10mm;
+            margin-bottom: 5mm;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 5mm;
+        }
+
+        .experience-item h3, .education-item h3 {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-bottom: 2mm;
+        }
+
+        .experience-item p, .education-item p {
+            font-size: 10pt;
+            color: #666;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.2;
+            font-size: 10pt;
+        }
+
+        div figure.table table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        div figure.table table th,
+        div figure.table table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        div figure.table table thead {
+            background-color: #f2f2f2;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="a4-page">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div>
+                <img alt="Professional headshot of a smiling person in a suit" height="100" src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" width="100"/>
+                <h2>
+                    About Me
+                </h2>
+                <p>
+                    {{ app.user.aboutme }}
+                </p>
+
+                {% if app.user.mainemail is not empty %}
+                    <p class="my-3">{{ app.user.mainemail }}</p>
+                {% endif %}
+
+                {% if app.user.location is not empty %}
+                    <p class="my-2"><i class="fa-solid fa-house"></i> - {{ app.user.location }}</p>
+                {% endif %}
+
+                {% if app.user.mainphone %}
+                    <p class="my-2"><i class="fa-solid fa-phone"></i> - {{ app.user.mainphone }}</p>
+                {% endif %}
+
+                <hr>
+
+
+                {% if app.user.education | length > 0 %}
+
+                    <div class="section-title">Education</div>
+                {% endif %}
+                {% for education in app.user.education %}
+                    <div class="education-item">
+                        {% if not loop.first %}{% endif %}
+                        <h3>{{ education.degree | title }} ({{ education.startdate | date("Y") }} - {{ education.enddate | date("Y") }})</h3>
+                        <div>{{ education.almamater | title }}</div>
+                    </div>
+                {% endfor %}
+
+                {% if app.user.links | length > 0 %}
+                    <hr>
+                    <div class="section-title">Enlaces</div>
+                {% endif %}
+                {% for link in app.user.links %}
+                    <div class="link-item">
+                        <a href="{{ link.link }}" style="color: white">{{ link.label }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Content -->
+        <div class="content">
+            <h1>
+     <span>
+      {{ app.user.name }}
+     </span>
+                {{ app.user.lastname }}
+            </h1>
+
+            <div>
+                <h2 class="section-title">
+                    Experience
+                </h2>
+                {% for experience in app.user.experience %}
+                    <div class="experience-item">
+                        {% if not loop.first %}<hr style="margin: 4mm 0">{% endif %}
+                        <h3 style="font-size: 11pt; margin: 0" class="mb-3">{{ experience.role | upper }}  ({{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }})</h3>
+                        <div class="experience-description">{{ experience.description | raw }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
