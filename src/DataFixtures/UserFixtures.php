@@ -23,6 +23,7 @@ class UserFixtures extends Fixture {
     {
         $user = new User();
         $user->setEmail('diegofernando150@gmail.com');
+        $user->setMainProfession('Full Stack Developer');
         $user->setName('Diego Fernando');
         $user->setLastName('Bastidas Rincón');
         $user->setPhoto('DFBASTIDAS-66a17dd04e889-66a2633e1a284-67d43a60d8c80.jpg');

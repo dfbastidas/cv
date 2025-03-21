@@ -92,16 +92,17 @@
         <div class="header">
             <div>
                 <h1>{{ app.user.name | upper }} {{ app.user.lastname | upper }}</h1>
-                <h2>Wedding Photographer</h2>
+
+                {% if app.user.mainprofession is not empty %}<h2>{{ app.user.mainprofession | title }}</h2>{% endif %}
             </div>
-            <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Maria Anderson - Profile Picture" class="profile-img">
+            {% if app.user.photo  is not empty %}<img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Maria Anderson - Profile Picture" class="profile-img"> {% endif %}
         </div>
 
 
         <!-- About Me -->
         {% if app.user.aboutme is not empty %}
             <div class="section-title">About Me</div>
-            <p class="content">{{ app.user.aboutme }}</p>
+            <p class="content mt-2">{{ app.user.aboutme }}</p>
 
         {% endif %}
         <div class="row">
@@ -109,7 +110,7 @@
                 <div class="col-6">
                     <div class="section-title">Education</div>
                     {% for edu in app.user.education %}
-                        <p>
+                        <p class="mt-2">
                             <strong>{{ edu.almamater }}</strong><br>
                             {{ edu.startdate|date("M Y") }} - {{ edu.enddate|date("M Y") }}<br>
                             {{ edu.degree }}.
@@ -159,7 +160,7 @@
                 <div class="col-6">
                     <div class="section-title">Experience</div>
                     {% for experience in app.user.experience %}
-                        <p>
+                        <p class="mt-2">
                             <strong>{{ experience.role | upper }}</strong>
                             <br><i>{{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }}</i>
                             <br> {{ experience.description | raw }}

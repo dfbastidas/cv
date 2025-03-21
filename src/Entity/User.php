@@ -86,6 +86,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $links;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $main_profession = null;
+
     public function __construct()
     {
         $this->curriculumVitaes = new ArrayCollection();
@@ -393,6 +396,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $link->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMainProfession(): ?string
+    {
+        return $this->main_profession;
+    }
+
+    public function setMainProfession(?string $main_profession): static
+    {
+        $this->main_profession = $main_profession;
 
         return $this;
     }

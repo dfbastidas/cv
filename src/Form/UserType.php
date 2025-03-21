@@ -23,6 +23,7 @@ class UserType extends AbstractType
             ->add('second_phone')
             ->add('main_email')
             ->add('second_email')
+            ->add('main_profession')
             ->add('photo', FileType::class, [
                 'label' => 'Image File',
                 'mapped' => false,
