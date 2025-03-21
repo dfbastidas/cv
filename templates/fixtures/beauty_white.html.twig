@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+        #cv-container {
+            width: 210mm;
+            margin: auto;
+            padding: 15mm;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5mm;
+        }
+        .header h1 {
+            font-size: 10mm;
+            font-weight: 600;
+            margin: 0;
+        }
+        .header h2 {
+            font-size: 5mm;
+            font-weight: 300;
+            margin-top: -2mm;
+        }
+
+        .profile-img {
+            width: 150px !important;
+            height: 150px !important;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .section-title {
+            font-size: 6mm;
+            font-weight: 600;
+            margin-top: 8mm;
+            text-transform: uppercase;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2mm;
+        }
+        .content {
+            font-size: 4mm;
+            line-height: 6mm;
+        }
+        .row {
+            margin-top: 5mm;
+        }
+        .contact-info p {
+            margin: 0;
+        }
+        .dot-icons {
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+        }
+        .dot {
+            width: 3mm;
+            height: 3mm;
+            background: #f0c808;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        div figure.table table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        div figure.table table th,
+        div figure.table table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        div figure.table table thead {
+            background-color: #f2f2f2;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.2;
+            font-size: 10pt;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div id="cv-container">
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <h1>{{ app.user.name | upper }} {{ app.user.lastname | upper }}</h1>
+
+            {% if app.user.mainprofession is not empty %}<h2 class="mt-2">{{ app.user.mainprofession | title }}</h2>{% endif %}
+        </div>
+        {% if app.user.photo  is not empty %}<img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Maria Anderson - Profile Picture" class="profile-img"> {% endif %}
+    </div>
+
+
+    <!-- About Me -->
+    {% if app.user.aboutme is not empty %}
+        <div class="section-title">About Me</div>
+        <p class="content mt-2">{{ app.user.aboutme }}</p>
+
+    {% endif %}
+    <div class="row">
+        {% if app.user.education|length > 0 %}
+            <div class="col-6">
+                <div class="section-title">Education</div>
+                {% for edu in app.user.education %}
+                    <p class="mt-2">
+                        <strong>{{ edu.almamater }}</strong><br>
+                        {{ edu.startdate|date("M Y") }} - {{ edu.enddate|date("M Y") }}<br>
+                        {{ edu.degree }}.
+                    </p>
+                {% endfor %}
+
+                <!-- Contact -->
+                <div class="contact-info">
+                    {% if app.user.mainemail is not empty or app.user.mainphone is not empty %}
+                        <div class="section-title">Contact</div>
+                    {% endif %}
+
+                    {% if app.user.mainemail is not empty %}
+                        <p class="my-3"><i class="fa-solid fa-envelope"></i> - {{ app.user.mainemail }}</p>
+                    {% endif %}
+
+                    {% if app.user.location is not empty %}
+                        <p class="my-2"><i class="fa-solid fa-house"></i> - {{ app.user.location }}</p>
+                    {% endif %}
+
+                    {% if app.user.mainphone %}
+                        <p class="my-2"><i class="fa-solid fa-phone"></i> - {{ app.user.mainphone }}</p>
+                    {% endif %}
+
+                </div>
+
+                <!-- Decorative Dots -->
+                <div class="dot-icons">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+
+                {% if app.user.links | length > 0 %}
+                    <div class="section-title">Enlaces</div>
+                {% endif %}
+                {% for link in app.user.links %}
+                    <div class="link-item my-3">
+                        <a href="{{ link.link }}">{{ link.label }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if app.user.experience  | length > 0 %}
+            <div class="col-6">
+                <div class="section-title">Experience</div>
+                {% for experience in app.user.experience %}
+                    <p class="mt-2">
+                        <strong>{{ experience.role | upper }}</strong>
+                        <br><i>{{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }}</i>
+                        <br> {{ experience.description | raw }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+    {% block javascripts %}
+    {# JavaScript completamente eliminado #}
+{% endblock %}

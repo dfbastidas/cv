@@ -8,7 +8,7 @@
         }
         #cv-container {
             width: 210mm;
-            margin: 20mm auto;
+            margin: auto;
             padding: 15mm;
             background: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -83,6 +83,12 @@
         div figure.table table thead {
             background-color: #f2f2f2;
         }
+
+        p {
+            margin: 0;
+            line-height: 1.2;
+            font-size: 10pt;
+        }
     </style>
 {% endblock %}
 
@@ -93,7 +99,7 @@
             <div>
                 <h1>{{ app.user.name | upper }} {{ app.user.lastname | upper }}</h1>
 
-                {% if app.user.mainprofession is not empty %}<h2>{{ app.user.mainprofession | title }}</h2>{% endif %}
+                {% if app.user.mainprofession is not empty %}<h2 class="mt-2">{{ app.user.mainprofession | title }}</h2>{% endif %}
             </div>
             {% if app.user.photo  is not empty %}<img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Maria Anderson - Profile Picture" class="profile-img"> {% endif %}
         </div>
@@ -118,7 +124,6 @@
                     {% endfor %}
 
                     <!-- Contact -->
-                    <div class="section-title">Contact</div>
                     <div class="contact-info">
                         {% if app.user.mainemail is not empty or app.user.mainphone is not empty %}
                             <div class="section-title">Contact</div>
