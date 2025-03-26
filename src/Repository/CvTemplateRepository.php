@@ -24,4 +24,16 @@ class CvTemplateRepository extends ServiceEntityRepository
                 ORDER BY template.id DESC
             ');
     }
+
+    public function getUserTemplateList($template_id_list) {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT template
+                FROM App\Entity\CvTemplate template
+                WHERE template.id IN (:template_id_list)
+                ORDER BY template.id DESC
+            ')
+            ->setParameter('template_id_list', $template_id_list)
+            ->getArrayResult();
+    }
 }

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}¡My CV!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/templates.css') }}">
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row">
+            {% for template in templates %}
+                <div class="col-md-3">
+                    <div class="m-2 border">
+                        <img src="{{ aws_bucket_cv_template_pics_url ~ '/' ~ template.thumbnail }}" alt="{{ template.name }}" class="w-100">
+                        <div>{{ template.name }} {{ template.downloads }}</div>
+                        <div>{{ template.creation_date | date | date("D-M-Y") }}</div>
+                        <div>
+                            <a href="{{ path('view_templates' , {id: template.id}) }}" class="btn btn-outline-success">Ver</a>
+                            <a href="{{ path('html_to_pdf', {id: template.id}) }}">Descarga</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
