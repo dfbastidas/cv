@@ -1,0 +1,17 @@
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     '%env(WKHTMLTOPDF_PATH)%'
+        options:
+            encoding: 'utf-8'
+            margin-top: 0
+            margin-right: 0
+            margin-bottom: 0
+            margin-left: 0
+            print-media-type: true
+            disable-javascript: true
+            no-outline: true
+    image:
+        enabled:    true
+        binary:     '%env(WKHTMLTOIMAGE_PATH)%'
+        options:    []

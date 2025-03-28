@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\CurriculumVitae;
+use App\Entity\CvTemplate;
 use App\Entity\User;
 use App\Form\RegisterType;
 use App\Form\UserType;
 use App\Service\FileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -58,5 +61,25 @@ final class UserController extends AbstractController
             return  $this->redirectToRoute('user_profile');
         }
         return $this->render('user/profile.html.twig', ['user_form' => $userForm->createView()]);
+    }
+
+    #[Route('/my-cvs', name: 'user_cvs')]
+    public function userCVS () {
+        $user = $this->getUser();
+        $curriculumsIds = $this->em->getRepository(CurriculumVitae::class)->getUserCurriculums($user);
+        $templates = $this->em->getRepository(CvTemplate::class)->getUserTemplateList($curriculumsIds);
+        return $this->render('user/cvs.html.twig', ['curriculums' => $curriculumsIds, 'templates' => $templates]);
+    }
+
+    #[Route('/save-cvs', name: 'save_user_cvs')]
+    public function saveUserCV() {
+        $user = $this->getUser();
+        $curriculum = new CurriculumVitae();
+        $curriculum->setOwner($user);
+        $curriculum->setCvTemplateId(29);
+        $this->em->persist($curriculum);
+        $this->em->flush();
+        return new JsonResponse(['success' => true]);
+
     }
 }

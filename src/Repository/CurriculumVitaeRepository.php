@@ -16,28 +16,16 @@ class CurriculumVitaeRepository extends ServiceEntityRepository
         parent::__construct($registry, CurriculumVitae::class);
     }
 
-    //    /**
-    //     * @return CurriculumVitae[] Returns an array of CurriculumVitae objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getUserCurriculums($owner) {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT cv.cv_template_id
+                FROM App\Entity\CurriculumVitae cv
+                WHERE cv.owner =:owner
+                ORDER BY cv.id DESC
+            ')
+            ->setParameter('owner', $owner)
+            ->getSingleColumnResult();
+    }
 
-    //    public function findOneBySomeField($value): ?CurriculumVitae
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

@@ -3,8 +3,9 @@
 {% block title %}¡My CV!{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/templates.css') }}">
 {% endblock %}
 {% block body %}
     {{ parent() }}
@@ -48,11 +49,24 @@
             </div>
         </div>
 
+        <div class="accordion accordion-flush" id="UserLink">
+            <div class="accordion-item border">
+                <h2 class="accordion-header" id="flush-headingLink">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseLink" aria-expanded="false" aria-controls="flush-collapseExperience">
+                        Enlaces
+                    </button>
+                </h2>
+                <div id="flush-collapseLink" class="accordion-collapse collapse p-3" aria-labelledby="flush-headingLink" data-bs-parent="#UserLink">
+                    {% include 'skeletons/links.html.twig' %}
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/education.js') }}"></script>
     <script src="{{ asset('js/experience.js') }}"></script>
-    <script src="{{ asset('js/quill.js') }}"></script>
+    <script src="{{ asset('js/link.js') }}"></script>
 {% endblock %}

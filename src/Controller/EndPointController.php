@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Education;
 use App\Entity\Experience;
+use App\Entity\Link;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,6 +72,34 @@ final class EndPointController extends AbstractController
         $user = $this->getUser();
         if ($experience->getUser() === $user) {
             $this->em->remove($experience);
+            $this->em->flush();
+            return  new JsonResponse(['success' => true]);
+        }
+        return new JsonResponse(['success' => false]);
+    }
+
+    #[Route('/save-link', name: 'save_link')]
+    public function saveLink(Request $request): JsonResponse {
+        $user = $this->getUser();
+        $data = json_decode($request->getContent(), true);
+        $link = new Link($data['label'], $data['link'], $user);
+        $this->em->persist($link);
+        $this->em->flush();
+        return new JsonResponse(['success' => true]);
+    }
+
+    #[Route('/get-links', name: 'get_links')]
+    public function getLinks(): JsonResponse {
+        $user = $this->getUser();
+        $links = $this->em->getRepository(Link::class)->getUserLink($user);
+        return  new JsonResponse($links);
+    }
+
+    #[Route('/delete-link/{id}', name: 'delete_link', methods: ['DELETE'])]
+    public function deleteLink(Link $link): JsonResponse {
+        $user = $this->getUser();
+        if ($user == $link->getUser()) {
+            $this->em->remove($link);
             $this->em->flush();
             return  new JsonResponse(['success' => true]);
         }

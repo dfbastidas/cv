@@ -1,15 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const saveExperienceButton = document.getElementById('save-experience');
-    // https://quilljs.com/playground/snow
-    const quill = new Quill('#editor', {
-        theme: 'snow'
-    });
+    let editorInstance;
 
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'link','bulletedList',
+                'numberedList',
+                'insertTable',
+                'undo',
+                'redo'
+            ],
+            removePlugins: ['Image', 'MediaEmbed', 'CKFinder']
+        })
+        .then(editor => {
+            editorInstance = editor;
+        })
+        .catch(error => console.error(error));
+
+
+    const saveExperienceButton = document.getElementById('save-experience');
     saveExperienceButton.addEventListener("click", async () => {
         const url = saveExperienceButton.getAttribute("data-url");
         const fields = ["role", "startExperienceDate", "endExperienceDate"];
-        const experienceData = Object.fromEntries(fields.map(id => [id, document.getElementById(id).value]));
-        experienceData.description = quill.root.innerHTML; // Obtener contenido de Quill.js como HTML
+        const experienceData = Object.fromEntries(
+            fields.map(id => [id, document.getElementById(id).value])
+        );
+        // Get the editor content from CKEditor v5
+        experienceData.description = editorInstance.getData();
+
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -19,8 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             if (data.success) {
                 console.log("Experience saved successfully!");
-                fields.forEach(id => (document.getElementById(id).value = ""));
-                quill.root.innerHTML = ""; // Vaciar Quill después de guardar
+                fields.forEach(id => document.getElementById(id).value = "");
+                // Clear the CKEditor content
+                editorInstance.setData("");
                 loadExperience();
             } else {
                 console.error("Error saving Experience.");
@@ -29,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error:", error);
         }
     });
+
+
     loadExperience();
 });
 

@@ -80,11 +80,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Education::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $education;
 
+    /**
+     * @var Collection<int, Link>
+     */
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $links;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $main_profession = null;
+
     public function __construct()
     {
         $this->curriculumVitaes = new ArrayCollection();
         $this->experience = new ArrayCollection();
         $this->education = new ArrayCollection();
+        $this->links = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -356,6 +366,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $education->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Link>
+     */
+    public function getLinks(): Collection
+    {
+        return $this->links;
+    }
+
+    public function addLink(Link $link): static
+    {
+        if (!$this->links->contains($link)) {
+            $this->links->add($link);
+            $link->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLink(Link $link): static
+    {
+        if ($this->links->removeElement($link)) {
+            // set the owning side to null (unless already changed)
+            if ($link->getUser() === $this) {
+                $link->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMainProfession(): ?string
+    {
+        return $this->main_profession;
+    }
+
+    public function setMainProfession(?string $main_profession): static
+    {
+        $this->main_profession = $main_profession;
 
         return $this;
     }

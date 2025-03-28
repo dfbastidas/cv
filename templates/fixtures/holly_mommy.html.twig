@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            background: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            overflow: auto; /* Enables scrolling on small screens */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Fixed A4 Container */
+        #cv-container {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            position: relative;
+            margin: 20px auto; /* Centers the CV horizontally */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Left Column (Fixed Position) */
+        .left-col {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 70mm;
+            height: 100%;
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 60mm;
+            height: 60mm;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        /* Right Column (Fixed Position) */
+        .right-col {
+            position: absolute;
+            top: 0;
+            left: 70mm;
+            width: calc(210mm - 70mm);
+            height: 100%;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 14pt;
+            color: #007bff;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 15px;
+        }
+
+        .experience-title, .education-title {
+            font-size: 12pt;
+            font-weight: bold;
+        }
+
+        .experience-date, .education-date {
+            font-size: 10pt;
+            color: #666;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white !important;
+            }
+            #cv-container {
+                box-shadow: none;
+                margin: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        div figure.table table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        div figure.table table th,
+        div figure.table table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        div figure.table table thead {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    <div id="cv-container">
+        <div class="left-col">
+            <img src="{{ aws_bucket_cv_media_pics_url }}/{{ app.user.photo }}" alt="Profile" class="profile-img" />
+            <div class="name">{{ app.user.name | title }} {{ app.user.lastname | title }}</div>
+            <p class="experience-description">{{ app.user.aboutme }}</p>
+        </div>
+        <div class="right-col">
+            <div class="section-title">Experiences</div>
+
+            {% for experience in app.user.experience %}
+                <div class="experience-item">
+                    {% if not loop.first %}<hr style="margin: 4mm 0">{% endif %}
+                    <h4 style="font-size: 11pt; margin: 0">{{ experience.role | upper }}</h4>
+                    <div class="experience-date">
+                        ({{ experience.startdate | date("M Y") }} - {{ experience.enddate | date("M Y") }})
+                    </div>
+                    <div class="experience-description">{{ experience.description | raw }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}
