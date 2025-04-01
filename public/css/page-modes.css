@@ -1,3 +1,4 @@
+/* ============== GLOBAL ============== */
 /* Fondo y texto global */
 body.dark-mode {
     background-color: #121212 !important;
@@ -10,6 +11,7 @@ body.dark-mode * {
     border-color: #333 !important;
 }
 
+/* ============== CKEDITOR ============== */
 /* Resaltar botones activos (ej. Bold) en modo oscuro (CKEditor) */
 body.dark-mode .ck-button.ck-on {
     background-color: #444 !important;
@@ -33,33 +35,44 @@ body.dark-mode .ck-table-form__dimensions-grid .ck-button.ck-on {
     border-color: #555 !important;
 }
 
-
 /* ============== SWEETALERT2 ============== */
 body.dark-mode .swal2-container {
     background: rgba(0, 0, 0, 0.75) !important;
     backdrop-filter: blur(5px);
 }
 
+/* Popup container */
 body.dark-mode .swal2-popup {
     background-color: #1e1e1e !important;
     border: 2px solid #f1f1f1 !important;
     color: #fff !important;
     border-radius: 10px !important;
+    box-shadow: none !important;
 }
 
-/* Títulos y texto */
+/* Ensure all sections of the popup share the same dark background */
+body.dark-mode .swal2-popup .swal2-title,
+body.dark-mode .swal2-popup .swal2-html-container,
+body.dark-mode .swal2-popup .swal2-icon,
+body.dark-mode .swal2-popup .swal2-actions,
+body.dark-mode .swal2-popup .swal2-footer,
+body.dark-mode .swal2-popup .swal2-validation-message {
+    background-color: #1e1e1e !important;
+    border: none !important;
+}
+
+/* Titles and text */
 body.dark-mode .swal2-title {
     color: #fff !important;
     font-size: 1.6rem !important;
     margin-bottom: 15px !important;
 }
-
 body.dark-mode .swal2-html-container {
     color: #ddd !important;
     font-size: 1.1rem !important;
 }
 
-/* Botones */
+/* Buttons */
 body.dark-mode .swal2-confirm {
     background-color: #4CAF50 !important;
     color: #fff !important;
@@ -67,7 +80,6 @@ body.dark-mode .swal2-confirm {
     padding: 12px 30px !important;
     font-weight: bold !important;
 }
-
 body.dark-mode .swal2-cancel {
     background-color: #ff4444 !important;
     color: #fff !important;
@@ -75,128 +87,108 @@ body.dark-mode .swal2-cancel {
     padding: 12px 30px !important;
 }
 
-/* Checkmark FIX DEFINITIVO */
+/* Success icon styles */
 body.dark-mode .swal2-icon.swal2-success {
     border-color: #4CAF50 !important;
-    color: #4CAF50 !important;
     background-color: transparent !important;
+    box-shadow: none !important;
 }
-
 body.dark-mode .swal2-success-line-tip,
 body.dark-mode .swal2-success-line-long {
     background-color: #4CAF50 !important;
     height: 4px !important;
     opacity: 1 !important;
 }
-
 body.dark-mode .swal2-success-circular-line-left,
 body.dark-mode .swal2-success-circular-line-right,
 body.dark-mode .swal2-success-fix {
     background-color: transparent !important;
 }
-
 @keyframes swal2-animate-success-line-tip {
     0% { width: 0; left: 1px; top: 19px; }
     100% { width: 25px; left: 8px; top: 23px; }
 }
-
 @keyframes swal2-animate-success-line-long {
     0% { width: 0; right: 1px; top: 26px; }
     100% { width: 47px; right: 8px; top: 23px; }
 }
-
 body.dark-mode .swal2-success-line-tip {
     top: 23px !important;
     left: 8px !important;
     width: 25px !important;
 }
-
 body.dark-mode .swal2-success-line-long {
     top: 23px !important;
     right: 8px !important;
     width: 47px !important;
 }
 
-/* Icono error */
+/* Error icon styles */
 body.dark-mode .swal2-icon.swal2-error {
     border-color: #ff4444 !important;
     color: #ff4444 !important;
 }
-
 body.dark-mode .swal2-x-mark-line-left,
 body.dark-mode .swal2-x-mark-line-right {
     background-color: #ff4444 !important;
     height: 4px !important;
 }
 
-/* Tamaño iconos */
+/* Icon sizing */
 body.dark-mode .swal2-icon {
     width: 80px !important;
     height: 80px !important;
     margin: 25px auto 15px !important;
 }
 
-/* Botón cerrar */
+/* Close button */
 body.dark-mode .swal2-close {
     color: #fff !important;
     font-size: 2em !important;
     transition: opacity 0.3s !important;
 }
-/* Animación del Checkmark */
-@keyframes swal2-animate-success-line-tip {
-    0% { width: 0; left: 1px; top: 19px; }
-    100% { width: 25px; left: 8px; top: 23px; }
-}
 
-@keyframes swal2-animate-success-line-long {
-    0% { width: 0; right: 1px; top: 26px; }
-    100% { width: 47px; right: 8px; top: 23px; }
-}
-
-/* (Opcional) Si deseas que el editor de CKEditor tenga fondo claro, descomenta este bloque */
-/*
-body.dark-mode .ck-editor__editable {
-    background-color: #e3e3e3 !important;
-    color: #111 !important;
-    border-color: #999 !important;
-}
-*/
-
+/* ============== COMPONENTES ============== */
 /* Navbar */
 .dark-mode .navbar,
 .dark-mode .navbar-collapse,
 .dark-mode .dropdown-menu {
     background-color: #1f1f1f !important;
+    border-color: #333 !important;
 }
 .dark-mode .nav-link,
 .dark-mode .navbar-brand {
     color: #ffffff !important;
 }
 
-/* Botones */
+/* Botones generales */
 .dark-mode .btn {
     background-color: #333 !important;
     color: #fff !important;
     border-color: #555 !important;
+    transition: all 0.3s !important;
 }
 
 /* Inputs en modo oscuro con fondo blanco mate */
 body.dark-mode input,
 body.dark-mode textarea,
 body.dark-mode select {
-    background-color: #e3e3e3 !important; /* Blanco mate */
-    color: #111 !important; /* Texto oscuro */
+    background-color: #e3e3e3 !important;
+    color: #111 !important;
     border-color: #999 !important;
+    padding: 8px 12px !important;
 }
 
 /* Tablas */
 .dark-mode table {
     background-color: #1e1e1e !important;
     color: #fff !important;
+    border: 1px solid #444 !important;
 }
 .dark-mode th,
 .dark-mode td {
     border-color: #444 !important;
+    padding: 12px !important;
 }
 
 /* Acordeones */
@@ -209,15 +201,24 @@ body.dark-mode select {
     color: #fff !important;
 }
 
-/* Card (para bloques tipo experiencia) */
+/* Cards */
 .dark-mode .card {
     background-color: #1e1e1e !important;
     color: #fff !important;
     border-color: #444 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
 }
 
-/* Bordes generales */
+/* Líneas divisorias */
 .dark-mode hr {
     border-color: #555 !important;
+    opacity: 0.5 !important;
 }
 
+/* Force the entire navbar to use a uniform dark background */
+.dark-mode nav.navbar,
+.dark-mode nav.navbar.bg-body-tertiary,
+.dark-mode nav.navbar * {
+    background-color: #1f1f1f !important;
+    background-image: none !important;
+}
