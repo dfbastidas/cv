@@ -20,6 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const saveExperienceButton = document.getElementById('save-experience');
     saveExperienceButton.addEventListener("click", async () => {
+        await Swal.fire({
+            title: "Saving...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+            timer: 1000,
+            timerProgressBar: true
+        });
+
         const url = saveExperienceButton.getAttribute("data-url");
         const fields = ["role", "startExperienceDate", "endExperienceDate"];
         const experienceData = Object.fromEntries(
@@ -36,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const data = await response.json();
             if (data.success) {
-                console.log("Experience saved successfully!");
+                Swal.fire("Saved!", "Experience saved successfully!", "success");
                 fields.forEach(id => document.getElementById(id).value = "");
                 // Clear the CKEditor content
                 editorInstance.setData("");
@@ -101,10 +109,24 @@ function formatDate(dateObj) {
     return `${day}-${month}-${year}`;
 }
 
-function deleteExperience(id, button) {
-    if (!confirm("¿Estás seguro de que deseas eliminar esta experiencia?")) {
-        return; // Detiene la ejecución si el usuario cancela
-    }
+async function deleteExperience(id, button) {
+    const confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "This can't be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    await Swal.fire({
+        title: "Deleting...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+        timer: 1000,
+        timerProgressBar: true
+    });
 
     const deleteUrl = button.getAttribute("data-url");
     fetch(deleteUrl, {
@@ -116,6 +138,7 @@ function deleteExperience(id, button) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                Swal.fire("Deleted!", "Experience removed.", "success");
                 document.getElementById(`experience-${id}`).remove(); // Elimina del DOM si fue exitoso
             } else {
                 alert("No tienes permiso para eliminar esta educación.");

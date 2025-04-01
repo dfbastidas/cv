@@ -38,8 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadEducation();
 });
 
-
-
 function loadEducation() {
     const userEducationDiv = document.getElementById("user-education");
     const url = userEducationDiv.getAttribute("data-url");
