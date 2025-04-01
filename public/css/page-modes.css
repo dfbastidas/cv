@@ -11,6 +11,22 @@ body.dark-mode * {
     border-color: #333 !important;
 }
 
+/* ============== BOTONES ============== */
+/* Restaurar colores originales de Bootstrap para TODOS los botones */
+body.dark-mode .btn,
+body.dark-mode .btn * {
+    background-color: var(--bs-btn-bg) !important;
+    color: var(--bs-btn-color) !important;
+    border-color: var(--bs-btn-border-color) !important;
+}
+
+/* Restaurar colores específicos para btn-success (Bootstrap) */
+body.dark-mode .btn-success {
+    --bs-btn-bg: #198754 !important;
+    --bs-btn-border-color: #198754 !important;
+    --bs-btn-color: #fff !important;
+}
+
 /* ============== CKEDITOR ============== */
 /* Resaltar botones activos (ej. Bold) en modo oscuro (CKEditor) */
 body.dark-mode .ck-button.ck-on {
@@ -161,14 +177,6 @@ body.dark-mode .swal2-close {
     color: #ffffff !important;
 }
 
-/* Botones generales */
-.dark-mode .btn {
-    background-color: #333 !important;
-    color: #fff !important;
-    border-color: #555 !important;
-    transition: all 0.3s !important;
-}
-
 /* Inputs en modo oscuro con fondo blanco mate */
 body.dark-mode input,
 body.dark-mode textarea,
@@ -189,6 +197,25 @@ body.dark-mode select {
 .dark-mode td {
     border-color: #444 !important;
     padding: 12px !important;
+}
+
+.dark-mode nav.navbar *:not(#toggle-dark) {
+    background-color: #1f1f1f !important;
+    background-image: none !important;
+}
+
+/* Restaurar estilos originales del botón de toggle en modo oscuro */
+body.dark-mode #toggle-dark {
+    background-color: var(--bs-btn-bg) !important;
+    color: var(--bs-btn-color) !important;
+    border-color: var(--bs-btn-border-color) !important;
+}
+
+/* Opcional: Forzar colores de Bootstrap si las variables no funcionan */
+body.dark-mode #toggle-dark.btn-primary {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: white !important;
 }
 
 /* Acordeones */
