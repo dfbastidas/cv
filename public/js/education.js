@@ -6,6 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const fields = ["degree", "startEducationDate", "endEducationDate", "almaMater"];
         const educationData = Object.fromEntries(fields.map(id => [id, document.getElementById(id).value]));
 
+        Swal.fire({
+            title: "Saving...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+        const startTime = Date.now();
+
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -15,19 +26,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
 
+            const elapsed = Date.now() - startTime;
+            if (elapsed < 1000) await delay(1000 - elapsed); // delay if fetch is too fast
+
             if (data.success) {
-                console.log("Education saved successfully!");
+                Swal.fire("Saved!", "Education saved successfully.", "success");
                 fields.forEach(id => (document.getElementById(id).value = ""));
-                loadEducation()
+                loadEducation();
             } else {
-                console.error("Error saving education.");
+                Swal.fire("Error", "Error saving education.", "error");
             }
         } catch (error) {
-            console.error("Error:", error);
+            await delay(1000); // ensure animation shows
+            Swal.fire("Error", error.message, "error");
         }
     });
-    loadEducation()
+
+    loadEducation();
 });
+
 
 function loadEducation() {
     const userEducationDiv = document.getElementById("user-education");
