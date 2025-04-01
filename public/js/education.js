@@ -1,33 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const saveEducationButton = document.getElementById("save-education");
-    saveEducationButton.addEventListener("click", async () => {
-        const url = saveEducationButton.getAttribute("data-url");
+    const btn = document.getElementById("save-education");
+    const fields = ["degree", "startEducationDate", "endEducationDate", "almaMater"];
 
-        const fields = ["degree", "startEducationDate", "endEducationDate", "almaMater"];
-        const educationData = Object.fromEntries(fields.map(id => [id, document.getElementById(id).value]));
+    btn.addEventListener("click", async () => {
+        const url = btn.getAttribute("data-url");
+        const data = Object.fromEntries(fields.map(id => [id, document.getElementById(id).value]));
+
+        await Swal.fire({
+            title: "Saving...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+            timer: 1000,
+            timerProgressBar: true
+        });
 
         try {
-            const response = await fetch(url, {
+            const res = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(educationData)
+                body: JSON.stringify(data)
             });
 
-            const data = await response.json();
+            const result = await res.json();
 
-            if (data.success) {
-                console.log("Education saved successfully!");
+            if (result.success) {
+                Swal.fire("Saved!", "Education saved.", "success");
                 fields.forEach(id => (document.getElementById(id).value = ""));
-                loadEducation()
+                loadEducation();
             } else {
-                console.error("Error saving education.");
+                Swal.fire("Error", "Could not save.", "error");
             }
-        } catch (error) {
-            console.error("Error:", error);
+        } catch (e) {
+            Swal.fire("Error", e.message, "error");
         }
     });
-    loadEducation()
+
+    loadEducation();
 });
+
+
 
 function loadEducation() {
     const userEducationDiv = document.getElementById("user-education");
@@ -76,25 +87,38 @@ function formatDate(dateObj) {
     return `${day}-${month}-${year}`;
 }
 
-function deleteEducation(id, button) {
-    if (!confirm("¿Estás seguro de que deseas eliminar esta educación?")) {
-        return; // Detiene la ejecución si el usuario cancela
-    }
+async function deleteEducation(id, button) {
+    const url = button.getAttribute("data-url");
 
-    const deleteUrl = button.getAttribute("data-url");
-    fetch(deleteUrl, {
-        method: 'DELETE', // Asegura que el backend acepte DELETE, si no usa 'POST'
-        headers: {
-            'Accept': 'application/json'
+    const confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "This can't be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    await Swal.fire({
+        title: "Deleting...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+        timer: 1000,
+        timerProgressBar: true
+    });
+
+    try {
+        const res = await fetch(url, { method: "DELETE", headers: { Accept: "application/json" } });
+        const data = await res.json();
+
+        if (data.success) {
+            Swal.fire("Deleted!", "Education removed.", "success");
+            document.getElementById(`education-${id}`).remove();
+        } else {
+            Swal.fire("Denied", "No permission to delete.", "error");
         }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById(`education-${id}`).remove(); // Elimina del DOM si fue exitoso
-            } else {
-                alert("No tienes permiso para eliminar esta educación.");
-            }
-        })
-        .catch(error => console.error('Error:', error));
+    } catch (e) {
+        Swal.fire("Error", e.message, "error");
+    }
 }
