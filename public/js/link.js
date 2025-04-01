@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     const saveLinkButton = document.getElementById("save-link");
     saveLinkButton.addEventListener("click", async () => {
+        await Swal.fire({
+            title: "Saving...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+            timer: 1000,
+            timerProgressBar: true
+        });
         const url = saveLinkButton.getAttribute("data-url");
 
         const fields = ["label", "link"];
@@ -16,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (data.success) {
-                console.log("Link saved successfully!");
+                Swal.fire("Saved!", "Link saved successfully!", "success");
                 fields.forEach(id => (document.getElementById(id).value = ""));
                 loadLinks()
             } else {
@@ -28,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     loadLinks()
 });
-
 
 function loadLinks() {
     const userLinkDiv = document.getElementById("user-link");
@@ -65,10 +71,25 @@ function loadLinks() {
         .catch(error => console.error('Error:', error));
 }
 
-function deleteLink(id, button) {
-    if (!confirm("¿Estás seguro de que deseas eliminar esta educación?")) {
-        return; // Detiene la ejecución si el usuario cancela
-    }
+async function deleteLink(id, button) {
+    const confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "This can't be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    await Swal.fire({
+        title: "Deleting...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+        timer: 1000,
+        timerProgressBar: true
+    });
+
 
     const deleteUrl = button.getAttribute("data-url");
     fetch(deleteUrl, {
@@ -80,6 +101,7 @@ function deleteLink(id, button) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                Swal.fire("Deleted!", "Link removed.", "success");
                 document.getElementById(`link-${id}`).remove(); // Elimina del DOM si fue exitoso
             } else {
                 alert("No tienes permiso para eliminar esta educación.");
