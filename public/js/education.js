@@ -24,7 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const result = await res.json();
 
             if (result.success) {
-                Swal.fire("Saved!", "Education saved.", "success");
+                Swal.fire({
+                    title: "Saved!",
+                    text: "Education saved successfully.",
+                    icon: "none" // Esto quita cualquier icono
+                });
                 fields.forEach(id => (document.getElementById(id).value = ""));
                 loadEducation();
             } else {
@@ -111,7 +115,11 @@ async function deleteEducation(id, button) {
         const data = await res.json();
 
         if (data.success) {
-            Swal.fire("Deleted!", "Education removed.", "success");
+            Swal.fire({
+                title: "Deleted!",
+                text: "Education removed.",
+                icon: "none" // Esto quita cualquier icono
+            });
             document.getElementById(`education-${id}`).remove();
         } else {
             Swal.fire("Denied", "No permission to delete.", "error");

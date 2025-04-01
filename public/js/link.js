@@ -24,6 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (data.success) {
                 Swal.fire("Saved!", "Link saved successfully!", "success");
+                Swal.fire({
+                    title: "Saved!",
+                    text: "Link saved successfully.",
+                    icon: "none" // Esto quita cualquier icono
+                });
                 fields.forEach(id => (document.getElementById(id).value = ""));
                 loadLinks()
             } else {
@@ -101,7 +106,12 @@ async function deleteLink(id, button) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                Swal.fire("Deleted!", "Link removed.", "success");
+
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Link removed.",
+                    icon: "none" // Esto quita cualquier icono
+                });
                 document.getElementById(`link-${id}`).remove(); // Elimina del DOM si fue exitoso
             } else {
                 alert("No tienes permiso para eliminar esta educación.");

@@ -44,7 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const data = await response.json();
             if (data.success) {
-                Swal.fire("Saved!", "Experience saved successfully!", "success");
+                Swal.fire({
+                    title: "Saved!",
+                    text: "Experience saved successfully.",
+                    icon: "none" // Esto quita cualquier icono
+                });
                 fields.forEach(id => document.getElementById(id).value = "");
                 // Clear the CKEditor content
                 editorInstance.setData("");
@@ -138,7 +142,11 @@ async function deleteExperience(id, button) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                Swal.fire("Deleted!", "Experience removed.", "success");
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Experience removed.",
+                    icon: "none" // Esto quita cualquier icono
+                });
                 document.getElementById(`experience-${id}`).remove(); // Elimina del DOM si fue exitoso
             } else {
                 alert("No tienes permiso para eliminar esta educación.");

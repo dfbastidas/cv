@@ -6,6 +6,7 @@
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ absolute_url(asset('css/bootstrap.min.css')) }}">
+            <link rel="stylesheet" href="{{ absolute_url(asset('css/page-modes.css')) }}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         {% endblock %}
     </head>
@@ -25,6 +26,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="{{ path('user_cvs') }}">Mis Hojas de Vida</a>
                             </li>
+
                             {% if is_granted('ROLE_ADMIN') %}
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="{{ path('create_template') }}">Crear Plantillas</a>
@@ -35,11 +37,27 @@
                             {% endif %}
                         </ul>
                     </div>
+
+                    <button id="toggle-dark" class="btn btn-sm ms-3 border">
+                        Modo Oscuro
+                    </button>
+
                 </div>
             </nav>
         {% endblock %}
         {% block javascripts %}
             <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const toggleBtn = document.getElementById("toggle-dark");
+
+                    toggleBtn?.addEventListener("click", () => {
+                        const isDark = document.body.classList.toggle("dark-mode");
+                        toggleBtn.textContent = isDark ? "Modo Claro" : "Modo Oscuro";
+                    });
+                });
+            </script>
+
         {% endblock %}
     </body>
 </html>
